@@ -1,6 +1,6 @@
 /*
  * File: base_converter.c
- * Code by: Fisao and Yuna
+ * Code by: Fisayo and Yuna
  */
 
 #include "main.h"
