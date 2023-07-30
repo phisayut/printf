@@ -1,8 +1,3 @@
-/*
- * File: _printf.c
- * Code by: Fisayo and Yuna
- */
-
 #include "main.h"
 
 void cleanup(va_list args, buffer_t *output);
@@ -31,7 +26,7 @@ void cleanup(va_list args, buffer_t *output)
  */
 int run_printf(const char *format, va_list args, buffer_t *output)
 {
-	int i, wid, prec, char_num = 0;
+	int i, wid, prec, ret = 0;
 	char tmp;
 	unsigned char flags, len;
 	unsigned int (*f)(va_list, buffer_t *,
@@ -53,20 +48,20 @@ int run_printf(const char *format, va_list args, buffer_t *output)
 			if (f != NULL)
 			{
 				i += tmp + 1;
-				char_num += f(args, output, flags, wid, prec, len);
+				ret += f(args, output, flags, wid, prec, len);
 				continue;
 			}
 			else if (*(format + i + tmp + 1) == '\0')
 			{
-				char_num = -1;
+				ret = -1;
 				break;
 			}
 		}
-		char_num += _memcpy(output, (format + i), 1);
+		ret += _memcpy(output, (format + i), 1);
 		i += (len != 0) ? 1 : 0;
 	}
 	cleanup(args, output);
-	return (char_num);
+	return (ret);
 }
 
 /**
@@ -79,7 +74,7 @@ int _printf(const char *format, ...)
 {
 	buffer_t *output;
 	va_list args;
-	int print_char;
+	int ret;
 
 	if (format == NULL)
 		return (-1);
@@ -89,7 +84,7 @@ int _printf(const char *format, ...)
 
 	va_start(args, format);
 
-	print_char = run_printf(format, args, output);
+	ret = run_printf(format, args, output);
 
-	return (print_char);
+	return (ret);
 }
